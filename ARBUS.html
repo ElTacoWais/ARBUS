@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARBUS - Soluciones Digitales & Consultoría</title>
+    <!-- Tailwind CSS con soporte para Dark Mode -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Fuente Google Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f4f8',
+                            100: '#d9e2ec',
+                            200: '#bcccdc',
+                            300: '#9fb3c8',
+                            400: '#829ab1',
+                            500: '#0284c7', // Azul de acento / acción
+                            600: '#0369a1', 
+                            700: '#102a43', // Azul marino corporativo
+                            800: '#0b1b2b',
+                            900: '#081420', // Azul noche de fondo oscuro
+                            950: '#051628'  // Color exacto extraído de tu logo (antiguo 1000)
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .placeholder-box {
+            background-image: repeating-linear-gradient(45deg, rgba(203, 213, 225, 0.2), rgba(203, 213, 225, 0.2) 10px, rgba(241, 245, 249, 0.4) 10px, rgba(241, 245, 249, 0.4) 20px);
+        }
+
+        .dark .placeholder-box {
+            background-image: repeating-linear-gradient(45deg, rgba(30, 41, 59, 0.4), rgba(30, 41, 59, 0.4) 10px, rgba(15, 23, 42, 0.6) 10px, rgba(15, 23, 42, 0.6) 20px);
+        }
+
+        .transition-all-custom {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-brand-950 text-slate-800 dark:text-slate-100 antialiased selection:bg-brand-500 selection:text-white transition-colors duration-300">
+
+    <!-- Header / Navegación -->
+    <header class="sticky top-0 z-40 w-full bg-white/90 dark:bg-brand-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo / Nombre de Marca -->
+                <div class="flex-shrink-0 flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-brand-950 dark:bg-slate-900 flex items-center justify-center overflow-hidden shadow-md shadow-brand-500/10 border border-slate-700">
+                        <img src="https://lh3.googleusercontent.com/d/1KP-LehyjdcA5HtM0E_1CP8qvYniVWK_V" alt="Logo ARBUS" class="h-10 w-auto object-contain rounded-lg">
+                    </div>
+                    <span class="font-bold text-xl text-brand-950 dark:text-white tracking-tight">ARBU<span class="text-brand-500">Soluciones</span></span>
+                </div>
+
+                <!-- Menú Desktop -->
+                <nav class="hidden md:flex space-x-8 font-medium text-sm text-slate-600 dark:text-slate-300">
+                    <a href="#inicio" class="hover:text-brand-500 dark:hover:text-brand-500 transition-colors">Inicio</a>
+                    <a href="#servicios" class="hover:text-brand-500 dark:hover:text-brand-500 transition-colors">Servicios</a>
+                    <a href="#nosotros" class="hover:text-brand-500 dark:hover:text-brand-500 transition-colors">Sobre Nosotros</a>
+                    <a href="#cotizador" class="hover:text-brand-500 dark:hover:text-brand-500 transition-colors">Cotizador</a>
+                    <a href="#contacto" class="hover:text-brand-500 dark:hover:text-brand-500 transition-colors">Contacto</a>
+                </nav>
+
+                <!-- Botón de Modo Oscuro + Cotización Rápida -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <!-- Toggle Switch Tema -->
+                    <button id="theme-toggle" type="button" class="text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-sm p-2.5 transition-colors focus:outline-none" aria-label="Cambiar Tema">
+                        <i id="theme-toggle-dark-icon" class="hidden fa-solid fa-moon text-lg"></i>
+                        <i id="theme-toggle-light-icon" class="hidden fa-solid fa-sun text-lg"></i>
+                    </button>
+
+                    <a href="#cotizador" class="bg-brand-500 hover:bg-brand-600 text-white font-medium px-4 py-2 rounded-lg text-sm shadow-sm transition-all hover:shadow-md">
+                        Cotización Rápida
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil & Dark Mode en móvil -->
+                <div class="md:hidden flex items-center space-x-2">
+                    <button id="theme-toggle-mobile" type="button" class="text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-sm p-2" aria-label="Cambiar Tema">
+                        <i id="theme-toggle-dark-icon-mobile" class="hidden fa-solid fa-moon text-lg"></i>
+                        <i id="theme-toggle-light-icon-mobile" class="hidden fa-solid fa-sun text-lg"></i>
+                    </button>
+                    <button id="mobile-menu-button" type="button" class="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white focus:outline-none p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Abrir menú">
+                        <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Desplegable Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-brand-950 px-4 pt-2 pb-4 space-y-2 font-medium">
+            <a href="#inicio" class="block px-3 py-2 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Inicio</a>
+            <a href="#servicios" class="block px-3 py-2 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Servicios</a>
+            <a href="#nosotros" class="block px-3 py-2 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Sobre Nosotros</a>
+            <a href="#cotizador" class="block px-3 py-2 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Cotizador</a>
+            <a href="#contacto" class="block px-3 py-2 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Contacto</a>
+        </div>
+    </header>
+
+    <!-- Hero / Encabezado -->
+    <section id="inicio" class="pt-12 pb-16 md:pt-20 md:pb-28 bg-gradient-to-b from-slate-100 to-slate-50 dark:from-brand-950 dark:to-brand-900 relative overflow-hidden transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Texto Principal -->
+                <div class="space-y-6 text-center lg:text-left">
+                    <span class="inline-block px-3 py-1 bg-brand-100 dark:bg-brand-900/80 text-brand-700 dark:text-brand-300 rounded-full text-xs font-semibold tracking-wide uppercase border border-brand-200 dark:border-brand-700">
+                        Transformación Digital & Consultoría
+                    </span>
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight">
+                        Potenciamos tu negocio con servicios estratégicos
+                    </h1>
+                    <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto lg:mx-0">
+                        Ofrecemos soluciones integrales en automatización, desarrollo web, consultoría fiscal y marketing digital para impulsar el crecimiento continuo de tu empresa.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+                        <a href="#cotizador" class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-6 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all text-center">
+                            Calcular Presupuesto
+                        </a>
+                        <a href="#servicios" class="bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 font-semibold px-6 py-3.5 rounded-xl transition-all text-center">
+                            Ver Servicios
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Cuadro de Imagen Hero (Placeholder) -->
+                <div class="w-full h-72 sm:h-96 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 placeholder-box p-6 flex flex-col items-center justify-center text-center shadow-inner group transition-all hover:border-brand-500">
+                    <div class="w-16 h-16 bg-white dark:bg-slate-800 rounded-full flex items-center justify-center shadow-sm mb-4 text-slate-400 group-hover:text-brand-500 group-hover:scale-110 transition-all">
+                        <i class="fa-regular fa-image text-3xl"></i>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-300 font-medium text-lg">imagen de Portada Principal</p>
+                    <span class="text-xs text-slate-400 dark:text-slate-500 mt-1">Recomendado: 1200 x 800 px</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Servicios -->
+    <section id="servicios" class="py-16 md:py-24 bg-white dark:bg-brand-950 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">Nuestros Servicios Especializados</h2>
+                <p class="mt-4 text-slate-600 dark:text-slate-300 text-lg">
+                    Explora nuestro catálogo de soluciones adaptadas a las necesidades específicas de tu proyecto o empresa.
+                </p>
+            </div>
+
+            <!-- Grid de Servicios (4 Tarjetas) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Servicio 1: Programas de Automatización -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                    <div>
+                        <div class="w-full h-44 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 placeholder-box flex flex-col items-center justify-center text-center p-3 mb-5 group">
+                            <i class="fa-solid fa-robot text-2xl text-slate-400 dark:text-slate-500 mb-2"></i>
+                            <p class="text-xs font-semibold text-slate-600 dark:text-slate-400">imagen de Programas de Automatización</p>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Programas de Automatización</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                            Optimiza procesos repetitivos, integra APIs y ahorra cientos de horas de trabajo con software a medida.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+                        <div class="mb-4">
+                            <span class="text-xs text-slate-400 dark:text-slate-500 uppercase font-semibold">Precio orientativo</span>
+                            <div class="text-2xl font-extrabold text-slate-900 dark:text-white">Desde $$$ / proyecto</div>
+                        </div>
+                        <button onclick="seleccionarServicio('automatizacion')" class="w-full bg-brand-950 dark:bg-slate-800 hover:bg-brand-500 dark:hover:bg-brand-500 text-white font-medium py-2.5 rounded-lg text-sm transition-colors flex items-center justify-center space-x-2">
+                            <span>Solicitar Cotización</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Servicio 2: Páginas Web -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                    <div>
+                        <div class="w-full h-44 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 placeholder-box flex flex-col items-center justify-center text-center p-3 mb-5">
+                            <i class="fa-solid fa-code text-2xl text-slate-400 dark:text-slate-500 mb-2"></i>
+                            <p class="text-xs font-semibold text-slate-600 dark:text-slate-400">imagen de Páginas Web</p>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Páginas Web</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                            Diseño responsive, ultra rápido y optimizado para conversión. Desde sitios corporativos hasta e-commerce.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+                        <div class="mb-4">
+                            <span class="text-xs text-slate-400 dark:text-slate-500 uppercase font-semibold">Precio orientativo</span>
+                            <div class="text-2xl font-extrabold text-slate-900 dark:text-white">Desde $$$ / sitio</div>
+                        </div>
+                        <button onclick="seleccionarServicio('web')" class="w-full bg-brand-950 dark:bg-slate-800 hover:bg-brand-500 dark:hover:bg-brand-500 text-white font-medium py-2.5 rounded-lg text-sm transition-colors flex items-center justify-center space-x-2">
+                            <span>Solicitar Cotización</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Servicio 3: Asesorías Fiscales/Contables -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                    <div>
+                        <div class="w-full h-44 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 placeholder-box flex flex-col items-center justify-center text-center p-3 mb-5">
+                            <i class="fa-solid fa-calculator text-2xl text-slate-400 dark:text-slate-500 mb-2"></i>
+                            <p class="text-xs font-semibold text-slate-600 dark:text-slate-400">imagen de Asesorías Fiscales/Contables</p>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Asesorías Fiscales/Contables</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                            Gestión contable integral, planeación fiscal, declaraciones y cumplimiento normativo sin complicaciones.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+                        <div class="mb-4">
+                            <span class="text-xs text-slate-400 dark:text-slate-500 uppercase font-semibold">Precio orientativo</span>
+                            <div class="text-2xl font-extrabold text-slate-900 dark:text-white">Desde $$$ / mes</div>
+                        </div>
+                        <button onclick="seleccionarServicio('fiscal')" class="w-full bg-brand-950 dark:bg-slate-800 hover:bg-brand-500 dark:hover:bg-brand-500 text-white font-medium py-2.5 rounded-lg text-sm transition-colors flex items-center justify-center space-x-2">
+                            <span>Solicitar Cotización</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Servicio 4: Servicios de Marketing -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                    <div>
+                        <div class="w-full h-44 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 placeholder-box flex flex-col items-center justify-center text-center p-3 mb-5">
+                            <i class="fa-solid fa-chart-line text-2xl text-slate-400 dark:text-slate-500 mb-2"></i>
+                            <p class="text-xs font-semibold text-slate-600 dark:text-slate-400">imagen de Servicios de Marketing</p>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Servicios de Marketing</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                            Estrategias de contenido, campañas publicitarias en redes y posicionamiento SEO para atraer clientes reales.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+                        <div class="mb-4">
+                            <span class="text-xs text-slate-400 dark:text-slate-500 uppercase font-semibold">Precio orientativo</span>
+                            <div class="text-2xl font-extrabold text-slate-900 dark:text-white">Desde $$$ / campaña</div>
+                        </div>
+                        <button onclick="seleccionarServicio('marketing')" class="w-full bg-brand-950 dark:bg-slate-800 hover:bg-brand-500 dark:hover:bg-brand-500 text-white font-medium py-2.5 rounded-lg text-sm transition-colors flex items-center justify-center space-x-2">
+                            <span>Solicitar Cotización</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre Nosotros / Por qué elegirnos -->
+    <section id="nosotros" class="py-16 md:py-24 bg-slate-100 dark:bg-brand-900 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Cuadro de Imagen Sección Sobre Nosotros -->
+                <div class="w-full h-80 sm:h-96 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 placeholder-box p-6 flex flex-col items-center justify-center text-center order-2 lg:order-1">
+                    <i class="fa-solid fa-users text-4xl text-slate-400 dark:text-slate-500 mb-3"></i>
+                    <p class="text-slate-600 dark:text-slate-300 font-medium text-lg">imagen de Sobre Nosotros / Equipo</p>
+                    <span class="text-xs text-slate-400 dark:text-slate-500 mt-1">Recomendado: 800 x 800 px</span>
+                </div>
+
+                <!-- Contenido -->
+                <div class="space-y-6 order-1 lg:order-2">
+                    <span class="text-brand-500 font-bold text-sm uppercase tracking-wider">¿Por qué elegirnos?</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white leading-tight">
+                        Experiencia sólida y enfoque orientado a resultados
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-300">
+                        Nos integramos con tu equipo para ofrecer soluciones prácticas que resuelvan problemas operativos, fiscales y de posicionamiento digital.
+                    </p>
+
+                    <!-- Lista de beneficios -->
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-6 h-6 rounded-full bg-brand-100 dark:bg-brand-800 text-brand-500 flex items-center justify-center mt-1 flex-shrink-0">
+                                <i class="fa-solid fa-check text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-900 dark:text-white">Atención personalizada</h4>
+                                <p class="text-slate-600 dark:text-slate-400 text-sm">Cada proyecto cuenta con un especialista asignado directamente.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-6 h-6 rounded-full bg-brand-100 dark:bg-brand-800 text-brand-500 flex items-center justify-center mt-1 flex-shrink-0">
+                                <i class="fa-solid fa-check text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-900 dark:text-white">Garantía de calidad</h4>
+                                <p class="text-slate-600 dark:text-slate-400 text-sm">Procesos estandarizados y entregas puntuales según calendario.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-6 h-6 rounded-full bg-brand-100 dark:bg-brand-800 text-brand-500 flex items-center justify-center mt-1 flex-shrink-0">
+                                <i class="fa-solid fa-check text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-900 dark:text-white">Transparencia en precios</h4>
+                                <p class="text-slate-600 dark:text-slate-400 text-sm">Presupuestos detallados sin costes ocultos ni sorpresas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simulador de Presupuesto / Cotizador Interactivo -->
+    <section id="cotizador" class="py-16 md:py-24 bg-brand-950 text-white transition-colors duration-300">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-brand-500 font-bold text-sm uppercase tracking-wider">Herramienta Interactiva</span>
+                <h2 class="text-3xl sm:text-4xl font-bold mt-2">Simulador de Presupuesto</h2>
+                <p class="mt-3 text-slate-400">
+                    Selecciona los servicios que necesitas para obtener una estimación aproximada instantánea.
+                </p>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Opciones de Selección -->
+                    <div class="space-y-4">
+                        <h3 class="font-semibold text-lg text-slate-200 border-b border-slate-800 pb-2">1. Elige los servicios:</h3>
+                        
+                        <!-- Checkbox 1 -->
+                        <label class="flex items-center justify-between p-3.5 bg-slate-800/60 hover:bg-slate-800 rounded-xl cursor-pointer transition-colors border border-slate-700">
+                            <div class="flex items-center space-x-3">
+                                <input type="checkbox" value="500" class="servicio-calc w-5 h-5 accent-brand-500 rounded" id="check-automatizacion">
+                                <span class="font-medium text-slate-200 text-sm">Programas de Automatización</span>
+                            </div>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2 py-1 rounded">$$$</span>
+                        </label>
+
+                        <!-- Checkbox 2 -->
+                        <label class="flex items-center justify-between p-3.5 bg-slate-800/60 hover:bg-slate-800 rounded-xl cursor-pointer transition-colors border border-slate-700">
+                            <div class="flex items-center space-x-3">
+                                <input type="checkbox" value="400" class="servicio-calc w-5 h-5 accent-brand-500 rounded" id="check-web">
+                                <span class="font-medium text-slate-200 text-sm">Página Web Profesional</span>
+                            </div>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2 py-1 rounded">$$$</span>
+                        </label>
+
+                        <!-- Checkbox 3 -->
+                        <label class="flex items-center justify-between p-3.5 bg-slate-800/60 hover:bg-slate-800 rounded-xl cursor-pointer transition-colors border border-slate-700">
+                            <div class="flex items-center space-x-3">
+                                <input type="checkbox" value="250" class="servicio-calc w-5 h-5 accent-brand-500 rounded" id="check-fiscal">
+                                <span class="font-medium text-slate-200 text-sm">Asesoría Fiscal / Contable</span>
+                            </div>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2 py-1 rounded">$$$</span>
+                        </label>
+
+                        <!-- Checkbox 4 -->
+                        <label class="flex items-center justify-between p-3.5 bg-slate-800/60 hover:bg-slate-800 rounded-xl cursor-pointer transition-colors border border-slate-700">
+                            <div class="flex items-center space-x-3">
+                                <input type="checkbox" value="350" class="servicio-calc w-5 h-5 accent-brand-500 rounded" id="check-marketing">
+                                <span class="font-medium text-slate-200 text-sm">Servicios de Marketing</span>
+                            </div>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2 py-1 rounded">$$$</span>
+                        </label>
+                    </div>
+
+                    <!-- Panel de Resumen -->
+                    <div class="bg-brand-950 rounded-xl p-6 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-semibold text-lg text-slate-200 border-b border-slate-800 pb-2">2. Resumen Estimado:</h3>
+                            <div class="py-6 text-center">
+                                <span class="text-xs text-slate-400 block uppercase tracking-wider mb-1">Estimación Aproximada</span>
+                                <div id="precio-total" class="text-4xl sm:text-5xl font-black text-brand-500 font-mono">
+                                    $$$
+                                </div>
+                                <p class="text-xs text-slate-500 mt-2">
+                                    *El valor final en $$$ se ajustará a las especificaciones finales.
+                                </p>
+                            </div>
+                        </div>
+
+                        <a href="#contacto" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3 px-4 rounded-xl text-center shadow-lg transition-all">
+                            Formalizar Solicitud
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galería / Testimonios -->
+    <section class="py-16 md:py-24 bg-white dark:bg-brand-950 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">Casos de Éxito & Testimonios</h2>
+                <p class="mt-4 text-slate-600 dark:text-slate-300">Proyectos recientes e impresiones de nuestros clientes.</p>
+            </div>
+
+            <!-- Grid Galería con Cuadros Vacíos -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                <div class="h-60 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 placeholder-box p-4 flex flex-col items-center justify-center text-center">
+                    <i class="fa-regular fa-image text-3xl text-slate-400 dark:text-slate-500 mb-2"></i>
+                    <p class="text-sm font-semibold text-slate-600 dark:text-slate-400">imagen de Caso de Éxito 1</p>
+                    <span class="text-xs text-slate-400 dark:text-slate-500">Automatización Industrial</span>
+                </div>
+                <div class="h-60 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 placeholder-box p-4 flex flex-col items-center justify-center text-center">
+                    <i class="fa-regular fa-image text-3xl text-slate-400 dark:text-slate-500 mb-2"></i>
+                    <p class="text-sm font-semibold text-slate-600 dark:text-slate-400">imagen de Caso de Éxito 2</p>
+                    <span class="text-xs text-slate-400 dark:text-slate-500">Rediseño Web Corporativo</span>
+                </div>
+                <div class="h-60 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 placeholder-box p-4 flex flex-col items-center justify-center text-center">
+                    <i class="fa-regular fa-image text-3xl text-slate-400 dark:text-slate-500 mb-2"></i>
+                    <p class="text-sm font-semibold text-slate-600 dark:text-slate-400">imagen de Caso de Éxito 3</p>
+                    <span class="text-xs text-slate-400 dark:text-slate-500">Campaña de Marketing Digital</span>
+                </div>
+            </div>
+
+            <!-- Testimonios Mock -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800">
+                    <div class="flex items-center space-x-1 text-amber-400 mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-700 dark:text-slate-300 italic mb-4">"El programa de automatización redujo nuestro tiempo de procesamiento de facturas en un 80%. Una excelente inversión."</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-800 border border-dashed border-slate-400 dark:border-slate-700 flex items-center justify-center text-xs text-slate-600 dark:text-slate-400 font-bold">
+                            Img
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-slate-900 dark:text-white text-sm">Cliente Empresarial</h5>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">Director de Operaciones</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800">
+                    <div class="flex items-center space-x-1 text-amber-400 mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-700 dark:text-slate-300 italic mb-4">"Las asesorías fiscales nos permitieron optimizar cargas impositivas de manera legal y clara. Altamente recomendados."</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-800 border border-dashed border-slate-400 dark:border-slate-700 flex items-center justify-center text-xs text-slate-600 dark:text-slate-400 font-bold">
+                            Img
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-slate-900 dark:text-white text-sm">Directora Comercial</h5>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">Startup Tecnológica</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Contacto -->
+    <section id="contacto" class="py-16 md:py-24 bg-slate-100 dark:bg-brand-900 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- Datos de contacto e Info -->
+                <div class="space-y-6">
+                    <span class="text-brand-500 font-bold text-sm uppercase tracking-wider">Contacto Directo</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">¿Tienes un proyecto en mente?</h2>
+                    <p class="text-slate-600 dark:text-slate-300">
+                        Ponte en contacto con nosotros hoy mismo. Responderemos a tu consulta en menos de 24 horas hábiles.
+                    </p>
+
+                    <div class="space-y-4 pt-4">
+                        <div class="flex items-center space-x-4 p-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+                            <div class="w-12 h-12 bg-brand-50 dark:bg-brand-800 text-brand-500 rounded-lg flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 font-semibold uppercase">Correo Electrónico</span>
+                                <p class="text-slate-800 dark:text-slate-200 font-medium">contacto@ejemplo.com</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4 p-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+                            <div class="w-12 h-12 bg-brand-50 dark:bg-brand-800 text-brand-500 rounded-lg flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 font-semibold uppercase">Teléfono</span>
+                                <p class="text-slate-800 dark:text-slate-200 font-medium">+52 (000) 000-0000</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4 p-4 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+                            <div class="w-12 h-12 bg-brand-50 dark:bg-brand-800 text-brand-500 rounded-lg flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 font-semibold uppercase">Ubicación</span>
+                                <p class="text-slate-800 dark:text-slate-200 font-medium">Colima, México</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario Interactivo -->
+                <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Envíanos un mensaje</h3>
+                    
+                    <form id="contact-form" onsubmit="handleSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nombre Completo</label>
+                            <input type="text" required placeholder="Tu nombre..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Correo Electrónico</label>
+                            <input type="email" required placeholder="tu@email.com" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Servicio de Interés</label>
+                            <select id="select-servicio" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all">
+                                <option value="">Selecciona un servicio...</option>
+                                <option value="automatizacion">Programas de Automatización</option>
+                                <option value="web">Páginas Web</option>
+                                <option value="fiscal">Asesorías Fiscales/Contables</option>
+                                <option value="marketing">Servicios de Marketing</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Mensaje / Detalle del Proyecto</label>
+                            <textarea rows="4" required placeholder="Cuéntanos más sobre tus necesidades..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3 px-4 rounded-lg shadow transition-all flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-paper-plane text-sm"></i>
+                            <span>Enviar Solicitud</span>
+                        </button>
+                    </form>
+
+                    <!-- Mensaje de Confirmación Formulario -->
+                    <div id="mensaje-exito" class="hidden mt-4 p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 rounded-lg text-sm text-center">
+                        <i class="fa-solid fa-circle-check text-emerald-600 dark:text-emerald-400 mr-2"></i>
+                        ¡Gracias por tu mensaje! Nos pondremos en contacto muy pronto.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Pie de página -->
+    <footer class="bg-brand-950 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center overflow-hidden shadow-md border border-slate-700">
+                        <img src="https://lh3.googleusercontent.com/d/1KP-LehyjdcA5HtM0E_1CP8qvYniVWK_V" alt="Logo ARBUS" class="h-10 w-auto object-contain rounded-lg">
+                    </div>
+                    <span class="font-bold text-lg text-white">ARBUS</span>
+                </div>
+
+                <div class="flex space-x-6 text-sm">
+                    <a href="#inicio" class="hover:text-white transition-colors">Inicio</a>
+                    <a href="#servicios" class="hover:text-white transition-colors">Servicios</a>
+                    <a href="#nosotros" class="hover:text-white transition-colors">Sobre Nosotros</a>
+                    <a href="#contacto" class="hover:text-white transition-colors">Contacto</a>
+                </div>
+
+                <div class="text-xs text-slate-500">
+                    &copy; 2026 ARBUS. Todos los derechos reservados.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón Flotante WhatsApp -->
+    <a href="https://wa.me/000000000000?text=Hola,%20me%20interesa%20solicitar%20información%20sobre%20sus%20servicios" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       class="fixed bottom-6 right-6 z-50 bg-emerald-500 hover:bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300 focus:outline-none"
+       title="Consultar por WhatsApp">
+        <i class="fa-brands fa-whatsapp text-3xl"></i>
+    </a>
+
+    <!-- Scripts Interactivos -->
+    <script>
+        // Gestor de Modo Oscuro (Dark Mode)
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        const themeToggleBtn = document.getElementById('theme-toggle');
+
+        const themeToggleDarkIconMobile = document.getElementById('theme-toggle-dark-icon-mobile');
+        const themeToggleLightIconMobile = document.getElementById('theme-toggle-light-icon-mobile');
+        const themeToggleBtnMobile = document.getElementById('theme-toggle-mobile');
+
+        // Verificar el modo al cargar
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            themeToggleLightIcon.classList.remove('hidden');
+            themeToggleLightIconMobile.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            themeToggleDarkIcon.classList.remove('hidden');
+            themeToggleDarkIconMobile.classList.remove('hidden');
+        }
+
+        function toggleDarkMode() {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            themeToggleDarkIconMobile.classList.toggle('hidden');
+            themeToggleLightIconMobile.classList.toggle('hidden');
+
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        }
+
+        themeToggleBtn.addEventListener('click', toggleDarkMode);
+        themeToggleBtnMobile.addEventListener('click', toggleDarkMode);
+
+        // Control del menú desplegable móvil
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Lógica del Simulador de Presupuesto
+        const checkboxes = document.querySelectorAll('.servicio-calc');
+        const precioTotalEl = document.getElementById('precio-total');
+
+        function actualizarTotal() {
+            let total = 0;
+            let seleccionado = false;
+
+            checkboxes.forEach(box => {
+                if (box.checked) {
+                    total += parseInt(box.value);
+                    seleccionado = true;
+                }
+            });
+
+            if (seleccionado) {
+                precioTotalEl.textContent = '$' + total.toLocaleString();
+            } else {
+                precioTotalEl.textContent = '$$$';
+            }
+        }
+
+        checkboxes.forEach(box => {
+            box.addEventListener('change', actualizarTotal);
+        });
+
+        // Función para preseleccionar servicio desde las tarjetas
+        function seleccionarServicio(servicioKey) {
+            const selectEl = document.getElementById('select-servicio');
+            if (selectEl) {
+                selectEl.value = servicioKey;
+            }
+
+            const boxMap = {
+                'automatizacion': 'check-automatizacion',
+                'web': 'check-web',
+                'fiscal': 'check-fiscal',
+                'marketing': 'check-marketing'
+            };
+
+            const boxId = boxMap[servicioKey];
+            if (boxId) {
+                const checkEl = document.getElementById(boxId);
+                if (checkEl) checkEl.checked = true;
+                actualizarTotal();
+            }
+
+            const contactoSec = document.getElementById('contacto');
+            if (contactoSec) {
+                contactoSec.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Manejo del formulario de contacto
+        function handleSubmit(e) {
+            e.preventDefault();
+            const form = document.getElementById('contact-form');
+            const exitoMsg = document.getElementById('mensaje-exito');
+
+            form.reset();
+            exitoMsg.classList.remove('hidden');
+
+            setTimeout(() => {
+                exitoMsg.classList.add('hidden');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
